@@ -1,7 +1,6 @@
 export function configure(config) {
   config.globalResources(
-  	'./value-converters/name-binder', 
-  	'./elements/contact-form', 
-  	'./elements/error-summary.html'
+  	'./elements/forms/contact-form', 
+  	'./elements/errors/error-summary.html'
   );
 }

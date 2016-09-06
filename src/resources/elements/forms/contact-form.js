@@ -1,7 +1,7 @@
 import {customElement, bindable} from 'aurelia-framework';
-import {inject, NewInstance} from 'aurelia-dependency-injection'; 
+import {inject} from 'aurelia-dependency-injection'; 
 import {ValidationControllerFactory, ValidationRules} from 'aurelia-validation';
-import {CustomValidationRenderer} from './validation-renderer';
+import {CustomValidationRenderer} from '../../renderers/validation-renderer';
 
 @inject(ValidationControllerFactory)
 @customElement('contact-form')

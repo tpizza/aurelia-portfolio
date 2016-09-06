@@ -1,6 +1,6 @@
 import {computedFrom, bindable} from 'aurelia-framework';
 
-export class NameBinder {
+export class ComputedName {
 
 	firstname;
 	lastname;
