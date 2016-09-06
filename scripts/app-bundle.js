@@ -120,7 +120,7 @@ define('main',['exports', './environment'], function (exports, _environment) {
   });
 
   function configure(aurelia) {
-    aurelia.use.standardConfiguration().plugin('aurelia-validation').plugin('aurelia-validatejs').feature('resources');
+    aurelia.use.standardConfiguration().plugin('aurelia-validation').feature('resources');
 
     if (_environment2.default.debug) {
       aurelia.use.developmentLogging();
@@ -162,10 +162,10 @@ define('resources/index',['exports'], function (exports) {
   });
   exports.configure = configure;
   function configure(config) {
-    config.globalResources('./value-converters/name-binder', './elements/contact-form');
+    config.globalResources('./value-converters/name-binder', './elements/contact-form', './elements/error-summary.html');
   }
 });
-define('resources/elements/contact-form',['exports', 'aurelia-framework', 'aurelia-dependency-injection', 'aurelia-validation'], function (exports, _aureliaFramework, _aureliaDependencyInjection, _aureliaValidation) {
+define('resources/elements/contact-form',['exports', 'aurelia-framework', 'aurelia-dependency-injection', 'aurelia-validation', './validation-renderer'], function (exports, _aureliaFramework, _aureliaDependencyInjection, _aureliaValidation, _validationRenderer) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -191,6 +191,7 @@ define('resources/elements/contact-form',['exports', 'aurelia-framework', 'aurel
 
       this.activateRules();
       this.controller = controllerFactory.createForCurrentScope();
+      this.controller.addRenderer(new _validationRenderer.CustomValidationRenderer());
     }
 
     ContactForm.prototype.activateRules = function activateRules() {
@@ -200,12 +201,13 @@ define('resources/elements/contact-form',['exports', 'aurelia-framework', 'aurel
         var valid = !/damn/gi.test(value);
         return valid;
       }, 'Watch your mouth!');
+
       _aureliaValidation.ValidationRules.ensure(function (ContactForm) {
         return firstName;
       }).required().minLength(2).satisfiesRule('Mouthoff').on(this).ensure(function (ContactForm) {
         return lastName;
       }).required().minLength(2).on(this).ensure(function (ContactForm) {
-        return phoneNum;
+        return phoneNumber;
       }).required().when(function (ContactForm) {
         return _this.preferredContact === 'Phone';
       }).on(this).ensure(function (ContactForm) {
@@ -1591,11 +1593,123 @@ define('aurelia-validation/implementation/validation-rules',["require", "exports
     exports.ValidationRules = ValidationRules;
 });
 
+define('resources/elements/validation-renderer',['exports', 'aurelia-validation'], function (exports, _aureliaValidation) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.CustomValidationRenderer = undefined;
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var CustomValidationRenderer = exports.CustomValidationRenderer = function () {
+    function CustomValidationRenderer() {
+      _classCallCheck(this, CustomValidationRenderer);
+    }
+
+    CustomValidationRenderer.prototype.render = function render(instruction) {
+      console.log(instruction);
+      for (var _iterator = instruction.unrender, _isArray = Array.isArray(_iterator), _i = 0, _iterator = _isArray ? _iterator : _iterator[Symbol.iterator]();;) {
+        var _ref;
+
+        if (_isArray) {
+          if (_i >= _iterator.length) break;
+          _ref = _iterator[_i++];
+        } else {
+          _i = _iterator.next();
+          if (_i.done) break;
+          _ref = _i.value;
+        }
+
+        var _ref3 = _ref;
+        var error = _ref3.error;
+        var elements = _ref3.elements;
+
+        for (var _iterator3 = elements, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator]();;) {
+          var _ref4;
+
+          if (_isArray3) {
+            if (_i3 >= _iterator3.length) break;
+            _ref4 = _iterator3[_i3++];
+          } else {
+            _i3 = _iterator3.next();
+            if (_i3.done) break;
+            _ref4 = _i3.value;
+          }
+
+          var element = _ref4;
+
+          this.remove(element, error);
+        }
+      }
+
+      for (var _iterator2 = instruction.render, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator]();;) {
+        var _ref2;
+
+        if (_isArray2) {
+          if (_i2 >= _iterator2.length) break;
+          _ref2 = _iterator2[_i2++];
+        } else {
+          _i2 = _iterator2.next();
+          if (_i2.done) break;
+          _ref2 = _i2.value;
+        }
+
+        var _ref5 = _ref2;
+        var error = _ref5.error;
+        var elements = _ref5.elements;
+
+        for (var _iterator4 = elements, _isArray4 = Array.isArray(_iterator4), _i4 = 0, _iterator4 = _isArray4 ? _iterator4 : _iterator4[Symbol.iterator]();;) {
+          var _ref6;
+
+          if (_isArray4) {
+            if (_i4 >= _iterator4.length) break;
+            _ref6 = _iterator4[_i4++];
+          } else {
+            _i4 = _iterator4.next();
+            if (_i4.done) break;
+            _ref6 = _i4.value;
+          }
+
+          var _element = _ref6;
+
+          this.add(_element, error);
+        }
+      }
+    };
+
+    CustomValidationRenderer.prototype.add = function add(element, error) {
+      element.classList.add('has-error');
+
+      var MESSAGE = document.createElement('div');
+      MESSAGE.className = 'validation-message-div text-danger';
+      MESSAGE.textContent = error.message;
+      MESSAGE.id = 'validation-message-' + error.id;
+      element.parentNode.insertBefore(MESSAGE, element.nextSibling);
+    };
+
+    CustomValidationRenderer.prototype.remove = function remove(element, error) {
+      var MESSAGE = element.parentElement.querySelector('#validation-message-' + error.id);
+      if (MESSAGE) {
+        element.parentElement.removeChild(MESSAGE);
+        element.classList.remove('has-error');
+      }
+    };
+
+    return CustomValidationRenderer;
+  }();
+});
 define('text!about-detail.html', ['module'], function(module) { module.exports = "<template>\n\t<h2>${message}</h2>\n</template>"; });
-define('text!app.html', ['module'], function(module) { module.exports = "<template>\n  <h1>${router.title}</h1>\n  <nav>\n\t  <ul class=\"nav nav-pills nav-justified\">\n\t         <!-- Loop through routes to create a menu  -->\n\t         <li repeat.for=\"row of router.navigation\" class=\"${row.isActive ? 'active' : ''}\">\n\t           <a href.bind=\"row.href\">${row.title}</a>\n\t         </li>\n\t  </ul>\n  </nav>\n  <div>\n  \t<h2>${message}</h2>\n  </div>\n  <router-view></router-view>\n</template>\n"; });
+define('text!app.html', ['module'], function(module) { module.exports = "<template>\n\t<nav class=\"navbar navbar-inverse\">\n\t<div class=\"navbar-header\">\n      <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\"#myNavbar\">\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n        <span class=\"icon-bar\"></span>\n      </button>\n      <a class=\"navbar-brand\" href=\"#\">${router.title}</a>\n    </div>\n\t  <div class=\"collapse navbar-collapse\" id=\"myNavbar\">\n\t    <ul class=\"nav navbar-nav\">\n\t      <!-- Loop through routes to create a menu  -->\n\t         <li repeat.for=\"row of router.navigation\" class=\"${row.isActive ? 'active' : ''}\">\n\t           <a href.bind=\"row.href\">${row.title}</a>\n\t         </li>\n\t    </ul>\n\t  </div>\n\t</nav>\n  <div>\n  \t<h2>${message}</h2>\n  </div>\n  <router-view></router-view>\n</template>\n"; });
 define('text!contact-detail.html', ['module'], function(module) { module.exports = "<template>\n\t${message}\n\t<contact-form></contact-form>\n</template>"; });
 define('text!default-landing.html', ['module'], function(module) { module.exports = "<template>\n\t<h2>${message}</h2>\n</template>"; });
 define('text!work-landing.html', ['module'], function(module) { module.exports = "<template>\n\t<h2>${message}</h2>\n</template>"; });
-define('text!resources/elements/contact-form.html', ['module'], function(module) { module.exports = "<template>\n\t<ul >\n    <li class=\"alert alert-danger\" repeat.for=\"error of controller.errors\">\n      ${error.message}\n    </li>\n  </ul>\n\t<form class=\"container\" role=\"form\" validation-errors.bind=\"errors\" submit.delegate=\"submit()\">\n\t\t\n\t\t<div class=\"form-group\">\n\t\t\t<label for=\"firstname\">First Name:</label>\n\t\t\t<input class=\"form-control\" id=\"firstname\" type=\"text\" value.bind=\"firstName | sanitizeHTML & validate\">\n\t\t</div>\n\t\t\n\t\t<div class=\"form-group\">\n\t\t\t<label for=\"lastname\">Last Name:</label>\n\t\t\t<input class=\"form-control\" id=\"lastname\" type=\"text\" value.bind=\"lastName | sanitizeHTML & validate\">\n\t\t</div>\n\t\t\n\t\t<div class=\"form-group\">\n\t\t\t<label for=\"phone\">Phone:</label>\n\t\t\t<input class=\"form-control\" id=\"phone\" type=\"tel\" value.bind=\"phoneNum | sanitizeHTML & validate\">\n\t\t</div>\n\n\t\t<div class=\"form-group\">\n\t\t\t<label for=\"email\">Email:</label>\n\t\t\t<input class=\"form-control\" id=\"email\" type=\"email\" value.bind=\"email | sanitizeHTML & validate\">\n\t\t</div>\n\t\t\n\t\t<div class=\"form-group\">\n\t\t\t<label for=\"request-type\">Reason for bugging me:</label>\n\t\t\t<select class=\"form-control\" id=\"request-type\" ref=\"request\" value.bind=\"ask & validate\">\n\t\t\t\t<option repeat.for=\"row of nature\" value=\"${row.name}\">${row.name}</option>\n\t\t\t</select>\n\t\t</div>\n\t\t\n\t\t<div class=\"form-group\">\n\t\t\t<label repeat.for=\"row of contactMethod\" for=\"contact-${row.id}\" class=\"radio-inline\">\n\t\t\t\t<input class=\"form-control\" id=\"contact-${row.id}\" name=\"contact-method\" type=\"radio\" value=\"${row.name}\" model.bind=\"row.name\" checked.bind=\"$parent.preferredContact\">\n\t\t\t\t${row.name}\n\t\t\t</label>\n\t\t</div>\n\n\t\t<button class=\"btn btn-primary btn-lg\" type=\"submit\">Submit ${ask}</button>\n\t\t\n\t</form>\n\t\n</template>"; });
+define('text!resources/elements/contact-form.html', ['module'], function(module) { module.exports = "<template>\n\t\n\t<error-summary errors.bind=\"controller.errors\" controller.bind=\"controller\" autofocus.bind=\"true\"></error-summary>\n\n\t<form class=\"container\" role=\"form\" validation-errors.bind=\"errors\" submit.delegate=\"submit()\" novalidate>\n\t\t\n\t\t<div class=\"form-group\">\n\t\t\t<label for=\"firstname\">First Name:</label>\n\t\t\t<input class=\"form-control\" id=\"firstname\" type=\"text\" value.bind=\"firstName | sanitizeHTML & validate\">\n\t\t</div>\n\t\t\n\t\t<div class=\"form-group\">\n\t\t\t<label for=\"lastname\">Last Name:</label>\n\t\t\t<input class=\"form-control\" id=\"lastname\" type=\"text\" value.bind=\"lastName | sanitizeHTML & validate\">\n\t\t</div>\n\t\t\n\t\t<div class=\"form-group\">\n\t\t\t<label for=\"phone\">Phone:</label>\n\t\t\t<input class=\"form-control\" id=\"phone\" type=\"tel\" value.bind=\"phoneNumber | sanitizeHTML & validate\">\n\t\t</div>\n\n\t\t<div class=\"form-group\">\n\t\t\t<label for=\"email\">Email:</label>\n\t\t\t<input class=\"form-control\" id=\"email\" type=\"email\" value.bind=\"email | sanitizeHTML & validate\">\n\t\t</div>\n\t\t\n\t\t<div class=\"form-group\">\n\t\t\t<label for=\"request-type\">I am making a(n):</label>\n\t\t\t<select class=\"form-control\" id=\"request-type\" ref=\"request\" value.bind=\"ask & validate\">\n\t\t\t\t<option repeat.for=\"row of nature\" value=\"${row.name}\">${row.name}</option>\n\t\t\t</select>\n\t\t</div>\n\t\t\n\t\t<div class=\"form-group\">\n\t\t\t<p><strong>Preferred Contact Method:</strong></p>\n\t\t\t<label repeat.for=\"row of contactMethod\" for=\"contact-${row.id}\" class=\"radio-inline\">\n\t\t\t\t<input id=\"contact-${row.id}\" name=\"contact-method\" type=\"radio\" value=\"${row.name}\" model.bind=\"row.name\" checked.bind=\"$parent.preferredContact\">\n\t\t\t\t${row.name}\n\t\t\t</label>\n\t\t</div>\n\n\t\t<div class=\"form-group\">\n\t\t\t<label for=\"contact-message\">Message:</label>\n\t\t\t<textarea class=\"form-control\" id=\"contact-message\" value.bind=\"comment | sanitizeHTML\"></textarea>\n\t\t</div>\n\n\t\t<button class=\"btn btn-primary btn-lg\" type=\"submit\">Submit ${ask}</button>\n\t\t\n\t</form>\n\t\n</template>"; });
 define('text!resources/value-converters/name-binder.html', ['module'], function(module) { module.exports = "<template>\n\t<div class=\"form-group\">\n\t\t<label for=\"firstname\">First Name:</label>\n\t\t<input class=\"form-control\" id=\"firstname\" type=\"text\" value.bind=\"firstname | sanitizeHTML & validate\">\t\t\n\t</div>\n\t\n\t<div class=\"form-group\">\n\t\t<label for=\"lastname\">Last Name:</label>\n\t\t<input class=\"form-control\" id=\"lastname\" type=\"text\" value.bind=\"lastname | sanitizeHTML & validate\">\n\t</div>\n</template>"; });
+define('text!resources/elements/error-summary.html', ['module'], function(module) { module.exports = "<template bindable=\"controller, errors, autofocus\">\n\t<ul class=\"error-summary-list alert alert-danger\" show.bind=\"errors.length\">\n\t    <li repeat.for=\"error of errors\">\n\t      <a class=\"error-summary-list-link\" href=\"#\" click.delegate=\"controller.elements.get(error)[0].focus()\"\n\t         if.bind=\"controller!=null && autofocus\">\n\t        <template replaceable part=\"error\">${error.message}</template>\n\t      </a>\n\t      <span if.bind=\"!(controller!=null && autofocus)\">\n\t        <template replaceable part=\"error\">${error.message}</template>\n\t        </span>\n\t    </li>\n\t</ul>\n</template>"; });
 //# sourceMappingURL=app-bundle.js.map

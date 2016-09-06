@@ -1,0 +1,13 @@
+<template bindable="controller, errors, autofocus">
+	<ul class="error-summary-list alert alert-danger" show.bind="errors.length">
+	    <li repeat.for="error of errors">
+	      <a class="error-summary-list-link" href="#" click.delegate="controller.elements.get(error)[0].focus()"
+	         if.bind="controller!=null && autofocus">
+	        <template replaceable part="error">${error.message}</template>
+	      </a>
+	      <span if.bind="!(controller!=null && autofocus)">
+	        <template replaceable part="error">${error.message}</template>
+	        </span>
+	    </li>
+	</ul>
+</template>

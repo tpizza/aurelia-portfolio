@@ -1,13 +1,22 @@
 <template>
-  <h1>${router.title}</h1>
-  <nav>
-	  <ul class="nav nav-pills nav-justified">
-	         <!-- Loop through routes to create a menu  -->
+	<nav class="navbar navbar-inverse">
+	<div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">${router.title}</a>
+    </div>
+	  <div class="collapse navbar-collapse" id="myNavbar">
+	    <ul class="nav navbar-nav">
+	      <!-- Loop through routes to create a menu  -->
 	         <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
 	           <a href.bind="row.href">${row.title}</a>
 	         </li>
-	  </ul>
-  </nav>
+	    </ul>
+	  </div>
+	</nav>
   <div>
   	<h2>${message}</h2>
   </div>

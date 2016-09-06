@@ -1,6 +1,7 @@
 import {customElement, bindable} from 'aurelia-framework';
 import {inject, NewInstance} from 'aurelia-dependency-injection'; 
 import {ValidationControllerFactory, ValidationRules} from 'aurelia-validation';
+import {CustomValidationRenderer} from './validation-renderer';
 
 @inject(ValidationControllerFactory)
 @customElement('contact-form')
@@ -10,10 +11,8 @@ export class ContactForm {
 
   firstName;
   lastName;
-  phoneNum;
+  phoneNumber;
   preferredContact;
-
-  
   email;
   comment;
   ask;
@@ -32,6 +31,7 @@ export class ContactForm {
    
     this.activateRules();
     this.controller = controllerFactory.createForCurrentScope();
+    this.controller.addRenderer(new CustomValidationRenderer());
   
   }
 
@@ -45,10 +45,11 @@ export class ContactForm {
       },
       `Watch your mouth!`
     );
+
     ValidationRules
       .ensure(ContactForm => firstName).required().minLength(2).satisfiesRule('Mouthoff').on(this)
       .ensure(ContactForm => lastName).required().minLength(2).on(this)
-      .ensure(ContactForm => phoneNum).required().when(ContactForm => this.preferredContact === 'Phone').on(this)
+      .ensure(ContactForm => phoneNumber).required().when(ContactForm => this.preferredContact === 'Phone').on(this)
       .ensure(ContactForm => email).email().required().when(ContactForm => this.preferredContact === 'Email').on(this);
 
   }
