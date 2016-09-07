@@ -12,6 +12,7 @@ export function configure(aurelia) {
   aurelia.use
     .standardConfiguration()
     .plugin('aurelia-validation')
+    .plugin('aurelia-animator-css')
     .feature('resources');
 
   if (environment.debug) {

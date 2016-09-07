@@ -1,0 +1,26 @@
+<template bindable="router, animator">
+	<nav class="navbar navbar-inverse">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainNav">
+				<i class="fa fa-3x fa-navicon"></i>
+			</button>
+			<a class="navbar-brand" href="#">${router.title}</a>
+	    </div>
+		<div class="collapse navbar-collapse" id="mainNav">
+			<ul class="nav navbar-nav">
+			  <!-- Loop through routes to create a menu  -->
+			     <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : ''}">
+			       <a href.bind="row.href">${row.title}</a>
+			     </li>
+			</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+			     <li class="pull-right" click.delegate="animator.animateElement('.animatedFlyout', 'formFlyin')">
+			     	<a href="#">
+			     		<i class="fa fa-2x fa-envelope-o"></i>
+			     	</a>
+			     </li>
+			</ul>
+		</div>
+	</nav>
+</template>

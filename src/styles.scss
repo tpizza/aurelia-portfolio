@@ -1,0 +1,96 @@
+@import url(http://fonts.googleapis.com/css?family=Luckiest+Guy);
+@import 'resources/elements/forms/contact-form';
+
+body{
+   background-image: url('../img/theoshaved.jpg');
+   background-position: center center;
+   background-repeat: no-repeat;
+}
+
+body, html{
+   height: 100%;
+   max-width: 100vw;
+   overflow-x: hidden;
+}
+
+h2, .navbar-brand{
+   font-family: 'Luckiest Guy';
+}
+
+.section-home{
+   text-align: center;
+   position: absolute;
+   bottom: 2em;
+   width: 100%;
+}
+
+.section-home a, h2{
+   color: #ececec;
+   text-decoration: none;
+}
+
+.section-home a:hover{
+   color: #ccdccc;
+}
+
+.navbar-brand{
+   font-size: 2.125em;
+   line-height: 1.375em;
+}
+
+.navbar{
+   margin-bottom: 0;
+   border-radius: 0;
+}
+
+.navbar-toggle{
+   color: #676767;
+}
+
+.animatedFlyout{
+	position: absolute;
+	right: -100%;
+}
+
+.animatedFlyout.toggled{
+	right: 0;
+}
+
+.formFlyin-add {
+   -webkit-animation: openFlyout 0.8s;
+   animation: openFlyout 0.8s;
+}
+
+.formFlyin-remove {
+   -webkit-animation: fadeIn 3s;
+   animation: fadeIn 3s;
+}
+
+.formFlyout-add{
+	-webkit-animation: closeFlyout 0.8s;
+   animation: closeFlyout 0.8s;
+}
+
+.formFlyout-remove{
+
+}
+
+@-webkit-keyframes openFlyout {
+   0% { right: -100%; }
+   100% { right: 0; }
+}
+
+@keyframes openFlyout {
+   0% { right: -100%; }
+   100% { right: 0; }
+}
+
+@-webkit-keyframes closeFlyout {
+   0% { right: 0; }
+   100% { right: -100%; }
+}
+
+@keyframes closeFlyout {
+   0% { right: 0; }
+   100% { right: -100%; }
+}

@@ -27,7 +27,8 @@
     "id": "sass",
     "displayName": "Sass",
     "fileExtension": ".scss",
-    "source": "src/**/*.scss"
+    "source": "src/**/*.scss",
+    "output": "dist/css"
   },
   "editor": {
     "id": "sublime",
@@ -128,9 +129,9 @@
             "main": "aurelia-validation"
           },
           {
-            "name": "aurelia-validatejs",
-            "path": "../node_modules/aurelia-validatejs/dist/amd",
-            "main": "aurelia-validatejs"
+            "name": "aurelia-animator-css",
+            "path": "../node_modules/aurelia-animator-css/dist/amd",
+            "main": "aurelia-animator-css"
           },
           {
               "name": "validate.js",
