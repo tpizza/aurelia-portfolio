@@ -1,4 +1,4 @@
-define('app',['exports', 'aurelia-router', 'aurelia-dependency-injection', './resources/binding-behaviors/form-animation'], function (exports, _aureliaRouter, _aureliaDependencyInjection, _formAnimation) {
+define('app',['exports', 'aurelia-router', 'aurelia-dependency-injection', './resources/binding-behaviors/element-animations', './contact/contact-panel'], function (exports, _aureliaRouter, _aureliaDependencyInjection, _elementAnimations, _contactPanel) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -14,7 +14,7 @@ define('app',['exports', 'aurelia-router', 'aurelia-dependency-injection', './re
 
   var _dec, _class;
 
-  var App = exports.App = (_dec = (0, _aureliaDependencyInjection.inject)(_formAnimation.AppAnimations), _dec(_class = function () {
+  var App = exports.App = (_dec = (0, _aureliaDependencyInjection.inject)(_elementAnimations.ElementAnimations, _contactPanel.ContactPanel), _dec(_class = function () {
     App.prototype.configureRouter = function configureRouter(config, router) {
       config.title = 'Theo';
       config.map([{ route: '', moduleId: 'home/home', title: 'UI Developer' }, { route: 'about', moduleId: 'about/about-detail', title: 'About', nav: false }, { route: 'work', moduleId: 'work/work-landing', title: 'Projects', nav: false }, { route: 'work/:id', moduleId: 'work/work-detail', title: 'Projects' }]);
@@ -22,11 +22,13 @@ define('app',['exports', 'aurelia-router', 'aurelia-dependency-injection', './re
       this.router = router;
     };
 
-    function App(animator) {
+    function App(animator, contact) {
       _classCallCheck(this, App);
 
       this.message = 'Clean Code is love. Clean Code is life.';
       this.animator = animator;
+      this.contact = contact;
+      this.app = this;
     }
 
     return App;
@@ -100,6 +102,91 @@ define('about/about-detail',['exports'], function (exports) {
 		this.message = 'About Theo';
 	};
 });
+define('contact/contact-panel',['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.ContactPanel = undefined;
+
+	function _initDefineProp(target, property, descriptor, context) {
+		if (!descriptor) return;
+		Object.defineProperty(target, property, {
+			enumerable: descriptor.enumerable,
+			configurable: descriptor.configurable,
+			writable: descriptor.writable,
+			value: descriptor.initializer ? descriptor.initializer.call(context) : void 0
+		});
+	}
+
+	function _classCallCheck(instance, Constructor) {
+		if (!(instance instanceof Constructor)) {
+			throw new TypeError("Cannot call a class as a function");
+		}
+	}
+
+	function _applyDecoratedDescriptor(target, property, decorators, descriptor, context) {
+		var desc = {};
+		Object['ke' + 'ys'](descriptor).forEach(function (key) {
+			desc[key] = descriptor[key];
+		});
+		desc.enumerable = !!desc.enumerable;
+		desc.configurable = !!desc.configurable;
+
+		if ('value' in desc || desc.initializer) {
+			desc.writable = true;
+		}
+
+		desc = decorators.slice().reverse().reduce(function (desc, decorator) {
+			return decorator(target, property, desc) || desc;
+		}, desc);
+
+		if (context && desc.initializer !== void 0) {
+			desc.value = desc.initializer ? desc.initializer.call(context) : void 0;
+			desc.initializer = undefined;
+		}
+
+		if (desc.initializer === void 0) {
+			Object['define' + 'Property'](target, property, desc);
+			desc = null;
+		}
+
+		return desc;
+	}
+
+	function _initializerWarningHelper(descriptor, context) {
+		throw new Error('Decorating class property failed. Please ensure that transform-class-properties is enabled.');
+	}
+
+	var _desc, _value, _class, _descriptor;
+
+	var ContactPanel = exports.ContactPanel = (_class = function () {
+		function ContactPanel() {
+			_classCallCheck(this, ContactPanel);
+
+			_initDefineProp(this, 'app', _descriptor, this);
+
+			this.message = 'Say Hi!';
+			this.contactVisible = false;
+		}
+
+		ContactPanel.prototype.toggleForm = function toggleForm(animator) {
+			this.contactVisible;
+
+			if (animator === undefined) throw new TypeError('Please bind and pass the Animator from your View');
+
+			var animationClass = this.contactVisible ? 'formFlyout' : 'formFlyin';
+			animator.animateElement('.animatedFlyout', animationClass, this.contactVisible);
+			this.contactVisible = this.contactVisible ? false : true;
+		};
+
+		return ContactPanel;
+	}(), (_descriptor = _applyDecoratedDescriptor(_class.prototype, 'app', [_aureliaFramework.bindable], {
+		enumerable: true,
+		initializer: null
+	})), _class);
+});
 define('home/home',['exports'], function (exports) {
 	'use strict';
 
@@ -117,7 +204,7 @@ define('home/home',['exports'], function (exports) {
 		_classCallCheck(this, Home);
 
 		this.title = 'UI Developer & Animator';
-		this.social = [{ name: 'LinkedIn', url: '#', icon: 'linkedin' }, { name: 'Facebook', url: '#', icon: 'facebook' }, { name: 'GitHub', url: '#', icon: 'github' }, { name: 'Steam', url: '#', icon: 'steam' }];
+		this.social = [{ name: 'LinkedIn', url: 'https://www.linkedin.com/in/theodorepizza', icon: 'linkedin' }, { name: 'GitHub', url: 'https://github.com/tpizza/aurelia-portfolio', icon: 'github' }, { name: 'Facebook', url: 'https://www.facebook.com/theo.pizza', icon: 'facebook' }, { name: 'Steam', url: 'https://steamcommunity.com/id/pizzaman1210', icon: 'steam' }];
 	};
 });
 define('resources/index',['exports'], function (exports) {
@@ -150,13 +237,13 @@ define('work/work-landing',['exports'], function (exports) {
 		this.message = 'Work';
 	};
 });
-define('resources/binding-behaviors/form-animation',['exports', 'aurelia-animator-css', 'aurelia-framework'], function (exports, _aureliaAnimatorCss, _aureliaFramework) {
+define('resources/binding-behaviors/element-animations',['exports', 'aurelia-animator-css', 'aurelia-framework'], function (exports, _aureliaAnimatorCss, _aureliaFramework) {
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.AppAnimations = undefined;
+	exports.ElementAnimations = undefined;
 
 	function _classCallCheck(instance, Constructor) {
 		if (!(instance instanceof Constructor)) {
@@ -166,25 +253,39 @@ define('resources/binding-behaviors/form-animation',['exports', 'aurelia-animato
 
 	var _dec, _class;
 
-	var AppAnimations = exports.AppAnimations = (_dec = (0, _aureliaFramework.inject)(_aureliaAnimatorCss.CssAnimator, Element), _dec(_class = function () {
-		function AppAnimations(animator, element) {
-			_classCallCheck(this, AppAnimations);
+	var ElementAnimations = exports.ElementAnimations = (_dec = (0, _aureliaFramework.inject)(_aureliaAnimatorCss.CssAnimator, Element), _dec(_class = function () {
+		function ElementAnimations(animator, element) {
+			_classCallCheck(this, ElementAnimations);
 
 			this.animator = animator;
 			this.element = element;
 		}
 
-		AppAnimations.prototype.animateElement = function animateElement(selector, animation, classy) {
+		ElementAnimations.prototype.animateElement = function animateElement(selector, animation, classy) {
+
+			console.log(selector);
+			console.log(selector);
+			console.log(selector);
+			console.log(this.element);
 
 			if (selector === undefined || animation === undefined) throw new TypeError('A selector and CSS animation name must be passed to the animator.');
 
 			var element = this.element.querySelector(selector);
+
+			if (element === null) throw new TypeError('The element you are trying to Animate is null');
+
 			var classed = classy ? this.animator.removeClass(element, 'toggled') : this.animator.addClass(element, 'toggled');
 
 			this.animator.animate(element, animation);
 		};
 
-		return AppAnimations;
+		ElementAnimations.prototype.animate = function animate(element, animation) {
+			console.log(element);
+			console.log(animation);
+			this.animator.animate(element, animation);
+		};
+
+		return ElementAnimations;
 	}()) || _class);
 });
 define('resources/renderers/validation-renderer',['exports', 'aurelia-validation'], function (exports, _aureliaValidation) {
@@ -1726,12 +1827,14 @@ define('aurelia-validation/implementation/validation-rules',["require", "exports
     exports.ValidationRules = ValidationRules;
 });
 
-define('text!app.html', ['module'], function(module) { module.exports = "<template>\n\t<require from=\"./shell/header.html\"></require>\n\t\n\t<header router.bind=\"router\" animator.bind=\"animator\"></header>\n\n\t<section class=\"col-xs-8 flyout-container animatedFlyout\">\n\t\t<span class=\"glyphicon glyphicon-remove\" click.delegate=\"animator.animateElement('.animatedFlyout', 'formFlyout', true)\"></span>\n\t\t<contact-form></contact-form>\n\t</section>\n\t<main role=\"main\" class=\"app-wrapper\">\n\t\t<router-view></router-view>\n\t</main>\n</template>\n"; });
+define('text!app.html', ['module'], function(module) { module.exports = "<template>\n\t<require from=\"./shell/header-basic.html\"></require>\n\t<require from=\"./contact/contact-panel\"></require>\n\t\n\t<header-basic router.bind=\"router\" app.bind=\"app\"></header-basic>\n\n\t<contact-panel app.bind=\"app\"></contact-panel>\n\t\n\t<main role=\"main\">\n\t\t<router-view></router-view>\n\t</main>\n</template>\n"; });
 define('text!about/about-detail.html', ['module'], function(module) { module.exports = "<template>\n\t<h2>${message}</h2>\n</template>"; });
+define('text!contact/contact-panel.html', ['module'], function(module) { module.exports = "<template>\n\t<section class=\"col-xs-8 flyout-container animatedFlyout\">\n\t\t<button class=\"btn btn-close pull-right\" click.delegate=\"app.contact.toggleForm(app.animator)\">\n\t\t\t<i class=\"fa fa-3x fa-close\"></i>\n\t\t</button>\n\t\t<h2>${message}</h2>\n\t\t<div class=\"clearfix\"></div>\n\t\t<contact-form></contact-form>\n\t</section>\n</template>"; });
+define('text!../dist/css/styles.css', ['module'], function(module) { module.exports = "@import url(http://fonts.googleapis.com/css?family=Luckiest+Guy);\n.btn.btn-close {\n  background: #0d3c0e;\n  border-radius: 0;\n  color: #0d2c0f; }\n  .btn.btn-close:focus {\n    outline: none; }\n\n.formFlyin-add {\n  -webkit-animation: openFlyout 0.8s;\n  animation: openFlyout 0.8s; }\n\n@-webkit-keyframes openFlyout {\n  0% {\n    right: -100%; }\n  100% {\n    right: 0; } }\n\n@keyframes openFlyout {\n  0% {\n    right: -100%; }\n  100% {\n    right: 0; } }\n\n.formFlyout-add {\n  -webkit-animation: closeFlyout 0.4s;\n  animation: closeFlyout 0.4s; }\n\n@-webkit-keyframes closeFlyout {\n  0% {\n    right: 0; }\n  100% {\n    right: -100%; } }\n\n@keyframes closeFlyout {\n  0% {\n    right: 0; }\n  100% {\n    right: -100%; } }\n\n.animatedFlyout {\n  position: absolute;\n  right: -100%;\n  z-index: 100; }\n\n.animatedFlyout.toggled {\n  right: 0; }\n\n.flyout-container {\n  background: #0d2c0f;\n  border: 1px solid #000;\n  max-width: 500px;\n  padding-bottom: 2em; }\n\n.flyout-container label {\n  color: #fff2cc; }\n\n.section-home {\n  text-align: center;\n  position: absolute;\n  bottom: 2em;\n  width: 100%;\n  z-index: 20; }\n\n.section-home a, h2 {\n  color: #ececec;\n  text-decoration: none; }\n\n.section-home a:hover {\n  color: #ccdccc; }\n\n.brand-pad {\n  padding: 0 15px; }\n\n.navbar {\n  margin-bottom: 0;\n  border-radius: 0; }\n\n.navbar-brand {\n  font-size: 2.125em;\n  line-height: 1.375em; }\n\n.navbar-toggle {\n  color: #676767; }\n\nbody {\n  background-image: url(\"../img/theoshaved.jpg\");\n  background-position: center center;\n  background-repeat: no-repeat; }\n\nbody, html {\n  height: 100%;\n  max-width: 100vw;\n  overflow-x: hidden; }\n\nh2, .navbar-brand {\n  font-family: 'Luckiest Guy'; }\n\n.vmiddle {\n  vertical-align: middle; }\n"; });
 define('text!home/home.html', ['module'], function(module) { module.exports = "<template>\n\t<section class=\"section section-home\">\n\t\t\n\t\t<h2>${title}</h2>\n\t\t\n\t\t<a repeat.for=\"channel of social\" title=\"${channel.name}\" href=\"${channel.url}\" target=\"_blank\" >\n\t\t\t<i class=\"fa fa-4x fa-${channel.icon}-square\"></i>\n\t\t</a>\n\n\t</section>\n</template>"; });
-define('text!../dist/css/styles.css', ['module'], function(module) { module.exports = "@import url(http://fonts.googleapis.com/css?family=Luckiest+Guy);\n.flyout-container {\n  background: #0d2c0f;\n  border: 1px solid #000;\n  max-width: 500px; }\n\n.flyout-container label {\n  color: #fff2cc; }\n\nbody {\n  background-image: url(\"../img/theoshaved.jpg\");\n  background-position: center center;\n  background-repeat: no-repeat; }\n\nbody, html {\n  height: 100%;\n  max-width: 100vw;\n  overflow-x: hidden; }\n\nh2, .navbar-brand {\n  font-family: 'Luckiest Guy'; }\n\n.section-home {\n  text-align: center;\n  position: absolute;\n  bottom: 2em;\n  width: 100%; }\n\n.section-home a, h2 {\n  color: #ececec;\n  text-decoration: none; }\n\n.section-home a:hover {\n  color: #ccdccc; }\n\n.navbar-brand {\n  font-size: 2.125em;\n  line-height: 1.375em; }\n\n.navbar {\n  margin-bottom: 0;\n  border-radius: 0; }\n\n.navbar-toggle {\n  color: #676767; }\n\n.animatedFlyout {\n  position: absolute;\n  right: -100%; }\n\n.animatedFlyout.toggled {\n  right: 0; }\n\n.formFlyin-add {\n  -webkit-animation: openFlyout 0.8s;\n  animation: openFlyout 0.8s; }\n\n.formFlyin-remove {\n  -webkit-animation: fadeIn 3s;\n  animation: fadeIn 3s; }\n\n.formFlyout-add {\n  -webkit-animation: closeFlyout 0.8s;\n  animation: closeFlyout 0.8s; }\n\n@-webkit-keyframes openFlyout {\n  0% {\n    right: -100%; }\n  100% {\n    right: 0; } }\n\n@keyframes openFlyout {\n  0% {\n    right: -100%; }\n  100% {\n    right: 0; } }\n\n@-webkit-keyframes closeFlyout {\n  0% {\n    right: 0; }\n  100% {\n    right: -100%; } }\n\n@keyframes closeFlyout {\n  0% {\n    right: 0; }\n  100% {\n    right: -100%; } }\n"; });
+define('text!shell/header-basic.html', ['module'], function(module) { module.exports = "<template bindable=\"router, app\">\n\t<nav class=\"navbar navbar-inverse animatedNav\">\n\t\t\t<span class=\"navbar-brand\" href=\"#\">${router.title}</span>\n\t   \n\t\t\t<ul class=\"nav navbar-nav navbar-right\">\n\t\t\t     <li class=\"brand-pad pull-right\" click.delegate=\"app.contact.toggleForm(app.animator)\">\n\t\t\t     \t<a href=\"#\">\n\t\t\t     \t\t<i class=\"fa fa-2x fa-envelope-o\"></i>\n\t\t\t     \t</a>\n\t\t\t     </li>\n\t\t\t</ul>\n\t\t\n\t</nav>\n</template>"; });
 define('text!shell/header.html', ['module'], function(module) { module.exports = "<template bindable=\"router, animator\">\n\t<nav class=\"navbar navbar-inverse\">\n\t\t<div class=\"navbar-header\">\n\t\t\t<button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\"#mainNav\">\n\t\t\t\t<i class=\"fa fa-3x fa-navicon\"></i>\n\t\t\t</button>\n\t\t\t<a class=\"navbar-brand\" href=\"#\">${router.title}</a>\n\t    </div>\n\t\t<div class=\"collapse navbar-collapse\" id=\"mainNav\">\n\t\t\t<ul class=\"nav navbar-nav\">\n\t\t\t  <!-- Loop through routes to create a menu  -->\n\t\t\t     <li repeat.for=\"row of router.navigation\" class=\"${row.isActive ? 'active' : ''}\">\n\t\t\t       <a href.bind=\"row.href\">${row.title}</a>\n\t\t\t     </li>\n\t\t\t</ul>\n\n\t\t\t<ul class=\"nav navbar-nav navbar-right\">\n\t\t\t     <li class=\"pull-right\" click.delegate=\"animator.animateElement('.animatedFlyout', 'formFlyin')\">\n\t\t\t     \t<a href=\"#\">\n\t\t\t     \t\t<i class=\"fa fa-2x fa-envelope-o\"></i>\n\t\t\t     \t</a>\n\t\t\t     </li>\n\t\t\t</ul>\n\t\t</div>\n\t</nav>\n</template>"; });
 define('text!work/work-landing.html', ['module'], function(module) { module.exports = "<template>\n\t<h2>${message}</h2>\n</template>"; });
-define('text!resources/elements/errors/error-summary.html', ['module'], function(module) { module.exports = "<template bindable=\"controller, errors, autofocus\">\n\t<ul class=\"error-summary-list alert alert-danger\" show.bind=\"errors.length\">\n\t    <li repeat.for=\"error of errors\">\n\t      <a class=\"error-summary-list-link\" href=\"#\" click.delegate=\"controller.elements.get(error)[0].focus()\"\n\t         if.bind=\"controller!=null && autofocus\">\n\t        <template replaceable part=\"error\">${error.message}</template>\n\t      </a>\n\t      <span if.bind=\"!(controller!=null && autofocus)\">\n\t        <template replaceable part=\"error\">${error.message}</template>\n\t        </span>\n\t    </li>\n\t</ul>\n</template>"; });
-define('text!resources/elements/forms/contact-form.html', ['module'], function(module) { module.exports = "<template>\n\t\t\t\n\t\t<form class=\"\" role=\"form\" validation-errors.bind=\"errors\" submit.delegate=\"submit()\" novalidate>\n\t\t\t\n\t\t\t<error-summary errors.bind=\"controller.errors\" controller.bind=\"controller\" autofocus.bind=\"true\"></error-summary>\n\t\t\t\n\t\t\t<div class=\"form-group\">\n\t\t\t\t<label for=\"firstname\">First Name:</label>\n\t\t\t\t<input class=\"form-control\" id=\"firstname\" type=\"text\" value.bind=\"firstName | sanitizeHTML & validate\">\n\t\t\t</div>\n\t\t\t\n\t\t\t<div class=\"form-group\">\n\t\t\t\t<label for=\"lastname\">Last Name:</label>\n\t\t\t\t<input class=\"form-control\" id=\"lastname\" type=\"text\" value.bind=\"lastName | sanitizeHTML & validate\">\n\t\t\t</div>\n\t\t\t\n\t\t\t<div class=\"form-group\">\n\t\t\t\t<label for=\"phone\">Phone:</label>\n\t\t\t\t<input class=\"form-control\" id=\"phone\" type=\"tel\" value.bind=\"phoneNumber | sanitizeHTML & validate\">\n\t\t\t</div>\n\n\t\t\t<div class=\"form-group\">\n\t\t\t\t<label for=\"email\">Email:</label>\n\t\t\t\t<input class=\"form-control\" id=\"email\" type=\"email\" value.bind=\"email | sanitizeHTML & validate\">\n\t\t\t</div>\n\t\t\t\n\t\t\t<div class=\"form-group\">\n\t\t\t\t<label for=\"request-type\">I am making a(n):</label>\n\t\t\t\t<select class=\"form-control\" id=\"request-type\" ref=\"request\" value.bind=\"ask & validate\">\n\t\t\t\t\t<option repeat.for=\"row of nature\" value=\"${row.name}\">${row.name}</option>\n\t\t\t\t</select>\n\t\t\t</div>\n\t\t\t\n\t\t\t<div class=\"form-group\">\n\t\t\t\t<label>Preferred Contact Method:</label><br/>\n\t\t\t\t<label repeat.for=\"row of contactMethod\" for=\"contact-${row.id}\" class=\"radio-inline\">\n\t\t\t\t\t<input id=\"contact-${row.id}\" name=\"contact-method\" type=\"radio\" value=\"${row.name}\" model.bind=\"row.name\" checked.bind=\"$parent.preferredContact\">\n\t\t\t\t\t${row.name}\n\t\t\t\t</label>\n\t\t\t</div>\n\n\t\t\t<div class=\"form-group\">\n\t\t\t\t<label for=\"contact-message\">Message:</label>\n\t\t\t\t<textarea class=\"form-control\" id=\"contact-message\" value.bind=\"comment | sanitizeHTML\"></textarea>\n\t\t\t</div>\n\n\t\t\t<button class=\"btn btn-primary btn-lg\" type=\"submit\">Submit ${ask}</button>\n\t\t\t\n\t\t</form>\n\n</template>"; });
+define('text!resources/elements/errors/error-summary.html', ['module'], function(module) { module.exports = "<template bindable=\"controller, errors, autofocus\">\n\t<div class=\"summary-box alert alert-warning\" show.bind=\"errors.length\">\n\t\t<i class=\"fa fa-3x fa-warning vmiddle\"></i>\n\t\t<span class=\"error-summary-list vmiddle\">\n\t\t\tOops. Please fix any errors to continue.\n\t\t\tto continue.\n\t\t</span>\n\t\t\n\t</div>\n\t<!-- <ul class=\"error-summary-list alert alert-danger\" show.bind=\"errors.length\">\n\t    <li repeat.for=\"error of errors\">\n\t      <a class=\"error-summary-list-link\" href=\"#\" click.delegate=\"controller.elements.get(error)[0].focus()\"\n\t         if.bind=\"controller!=null && autofocus\">\n\t        <template replaceable part=\"error\">${error.message}</template>\n\t      </a>\n\t      <span if.bind=\"!(controller!=null && autofocus)\">\n\t        <template replaceable part=\"error\">${error.message}</template>\n\t        </span>\n\t    </li>\n\t</ul> -->\n</template>"; });
+define('text!resources/elements/forms/contact-form.html', ['module'], function(module) { module.exports = "<template>\n\t\t\t\n\t\t<form role=\"form\" validation-errors.bind=\"errors\" submit.delegate=\"submit()\" novalidate>\n\t\t\t\n\t\t\t<error-summary errors.bind=\"controller.errors\" controller.bind=\"controller\" autofocus.bind=\"true\"></error-summary>\n\t\t\t\n\t\t\t<div class=\"form-group\">\n\t\t\t\t<label for=\"firstname\">First Name:</label>\n\t\t\t\t<input class=\"form-control\" id=\"firstname\" type=\"text\" value.bind=\"firstName | sanitizeHTML & validate\">\n\t\t\t</div>\n\t\t\t\n\t\t\t<div class=\"form-group\">\n\t\t\t\t<label for=\"lastname\">Last Name:</label>\n\t\t\t\t<input class=\"form-control\" id=\"lastname\" type=\"text\" value.bind=\"lastName | sanitizeHTML & validate\">\n\t\t\t</div>\n\t\t\t\n\t\t\t<div class=\"form-group\">\n\t\t\t\t<label for=\"phone\">Phone:</label>\n\t\t\t\t<input class=\"form-control\" id=\"phone\" type=\"tel\" value.bind=\"phoneNumber | sanitizeHTML & validate\">\n\t\t\t</div>\n\n\t\t\t<div class=\"form-group\">\n\t\t\t\t<label for=\"email\">Email:</label>\n\t\t\t\t<input class=\"form-control\" id=\"email\" type=\"email\" value.bind=\"email | sanitizeHTML & validate\">\n\t\t\t</div>\n\t\t\t\n\t\t\t<div class=\"form-group\">\n\t\t\t\t<label for=\"request-type\">I am making a(n):</label>\n\t\t\t\t<select class=\"form-control\" id=\"request-type\" ref=\"request\" value.bind=\"ask & validate\">\n\t\t\t\t\t<option repeat.for=\"row of nature\" value=\"${row.name}\">${row.name}</option>\n\t\t\t\t</select>\n\t\t\t</div>\n\t\t\t\n\t\t\t<div class=\"form-group\">\n\t\t\t\t<label>Preferred Contact Method:</label><br/>\n\t\t\t\t<label repeat.for=\"row of contactMethod\" for=\"contact-${row.id}\" class=\"radio-inline\">\n\t\t\t\t\t<input id=\"contact-${row.id}\" name=\"contact-method\" type=\"radio\" value=\"${row.name}\" model.bind=\"row.name\" checked.bind=\"$parent.preferredContact\">\n\t\t\t\t\t${row.name}\n\t\t\t\t</label>\n\t\t\t</div>\n\n\t\t\t<div class=\"form-group\">\n\t\t\t\t<label for=\"contact-message\">Message:</label>\n\t\t\t\t<textarea class=\"form-control\" id=\"contact-message\" value.bind=\"comment | sanitizeHTML\"></textarea>\n\t\t\t</div>\n\n\t\t\t<button class=\"btn btn-success btn-lg\" type=\"submit\">Submit ${ask}</button>\n\t\t\t\n\t\t</form>\n\n</template>"; });
 //# sourceMappingURL=app-bundle.js.map

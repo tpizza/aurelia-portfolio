@@ -1,0 +1,16 @@
+@mixin elementFlyin($className, $animName, $start: -100%, $finish: 0, $time: 0.8s, $dir: right){
+   .#{$className}-add{
+      -webkit-animation: #{$animName} $time;
+      animation: #{$animName} $time;
+   }
+
+   @-webkit-keyframes #{$animName} {
+      0% { #{$dir}: $start; }
+      100% { #{$dir}: $finish; }
+   }
+
+   @keyframes #{$animName} {
+      0% { #{$dir}: $start; }
+      100% { #{$dir}: $finish; }
+   }
+}

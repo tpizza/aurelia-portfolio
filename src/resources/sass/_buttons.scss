@@ -1,0 +1,10 @@
+.btn.btn-close{
+   background: #0d3c0e;
+   border-radius: 0;
+
+   color: #0d2c0f;
+
+   &:focus{
+      outline: none;
+   }
+}

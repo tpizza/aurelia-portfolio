@@ -1,0 +1,14 @@
+<template bindable="router, app">
+	<nav class="navbar navbar-inverse animatedNav">
+			<span class="navbar-brand" href="#">${router.title}</span>
+	   
+			<ul class="nav navbar-nav navbar-right">
+			     <li class="brand-pad pull-right" click.delegate="app.contact.toggleForm(app.animator)">
+			     	<a href="#">
+			     		<i class="fa fa-2x fa-envelope-o"></i>
+			     	</a>
+			     </li>
+			</ul>
+		
+	</nav>
+</template>

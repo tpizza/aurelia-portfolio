@@ -1,13 +1,12 @@
 <template>
-	<require from="./shell/header.html"></require>
+	<require from="./shell/header-basic.html"></require>
+	<require from="./contact/contact-panel"></require>
 	
-	<header router.bind="router" animator.bind="animator"></header>
+	<header-basic router.bind="router" app.bind="app"></header-basic>
 
-	<section class="col-xs-8 flyout-container animatedFlyout">
-		<span class="glyphicon glyphicon-remove" click.delegate="animator.animateElement('.animatedFlyout', 'formFlyout', true)"></span>
-		<contact-form></contact-form>
-	</section>
-	<main role="main" class="app-wrapper">
+	<contact-panel app.bind="app"></contact-panel>
+	
+	<main role="main">
 		<router-view></router-view>
 	</main>
 </template>

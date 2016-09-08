@@ -1,10 +1,13 @@
 import {Router, RouterConfiguration} from 'aurelia-router';
 import {inject} from 'aurelia-dependency-injection';
-import {AppAnimations} from './resources/binding-behaviors/form-animation';
+import {ElementAnimations} from './resources/binding-behaviors/element-animations';
+import {ContactPanel} from './contact/contact-panel';
 
-@inject(AppAnimations)
+@inject(ElementAnimations, ContactPanel)
 export class App {
-  router: Router;
+  router;
+  app;
+  contact;
   animator;
 
   configureRouter(config: RouterConfiguration, router: Router){
@@ -19,8 +22,12 @@ export class App {
     this.router = router;
   }
 
-  constructor(animator) {
+  constructor(animator, contact) {
     this.message = 'Clean Code is love. Clean Code is life.';
     this.animator = animator;
+    this.contact = contact;
+    this.app = this;
+
   }
+
 }

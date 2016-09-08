@@ -1,0 +1,27 @@
+@include elementFlyin('formFlyin', 'openFlyout');
+@include elementFlyin('formFlyout', 'closeFlyout', 0, -100%, 0.4s);
+
+.animatedFlyout{
+	position: absolute;
+	right: -100%;
+   z-index: 100;
+}
+
+.animatedFlyout.toggled{
+	right: 0;
+}
+
+.flyout-container{
+	background: #0d2c0f;
+
+	border: 1px solid #000;
+
+	max-width: 500px;
+
+	padding-bottom: 2em;
+}
+
+.flyout-container label{
+	color: #fff2cc;
+}
+
