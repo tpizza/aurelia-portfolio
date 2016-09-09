@@ -10,10 +10,12 @@ export class ContactPanel {
 	toggleForm(animator){
 		
 		if(animator === undefined)
-			throw new TypeError(`Please bind and pass the Animator`);
-	    
-	    let animationClass = this.contactVisible ? 'formFlyout' : 'formFlyin';
-	    animator.animateElement('.animatedFlyout', animationClass, this.contactVisible);
+			throw new TypeError(`Please bind and pass the Animator`); 
+
+	    animator.animateElement('.animatedFlyout', this.contactVisible ? 'formFlyout' : 'formFlyin', this.contactVisible);
+		
+		animator.animator[this.contactVisible ? 'removeClass' : 'addClass'](document.body, 'toggled');
+
 	    this.contactVisible = this.contactVisible ? false : true;
   	}
 
@@ -23,6 +25,8 @@ export class ContactPanel {
 			throw new TypeError(`Please bind and pass the Animator`);
 	    
 	    animator.animateElement('.animatedFlyout', 'formFlyout', true);
+	    animator.animator.removeClass(document.body, 'toggled');
+
 	    this.contactVisible = false;
   	}
 }

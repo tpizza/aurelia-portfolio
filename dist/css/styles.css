@@ -92,15 +92,21 @@
 .navbar-toggle {
   color: #676767; }
 
-body {
-  background-image: url("../img/theoshaved.jpg");
-  background-position: center center;
-  background-repeat: no-repeat; }
-
 body, html {
   height: 100%;
   max-width: 100vw;
   overflow-x: hidden; }
+
+body {
+  background-color: #000;
+  background-image: url("../img/dad-and-hannie.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow-y: hidden; }
+
+body.toggled {
+  overflow-y: scroll; }
 
 h2, .navbar-brand {
   font-family: 'Luckiest Guy'; }
