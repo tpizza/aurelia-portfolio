@@ -1,6 +1,7 @@
 import {customElement, bindable} from 'aurelia-framework';
 import {inject} from 'aurelia-dependency-injection'; 
 import {ValidationControllerFactory, ValidationRules} from 'aurelia-validation';
+import {HttpClient} from 'aurelia-http-client';
 import {CustomValidationRenderer} from '../../renderers/validation-renderer';
 
 @inject(ValidationControllerFactory)
@@ -8,6 +9,7 @@ import {CustomValidationRenderer} from '../../renderers/validation-renderer';
 export class ContactForm {
   
   controller;
+  client;
 
   firstName;
   lastName;
@@ -32,7 +34,11 @@ export class ContactForm {
     this.activateRules();
     this.controller = controllerFactory.createForCurrentScope();
     this.controller.addRenderer(new CustomValidationRenderer());
-  
+    this.client = new HttpClient()
+      .configure( x => {
+        x.withBaseUrl('http://theopizza.com')
+      });
+
   }
 
   activateRules(){
@@ -60,7 +66,19 @@ export class ContactForm {
 
     errors.then(v => {
       if(v.length === 0){
-        console.info('nada');
+        console.info('passed');
+        let formData = new FormData();
+        formData.append('formName', 'Portfolio Contact Form');
+        formData.append('firstName', this.firstName);
+        formData.append('lastName', this.lastName);
+        formData.append('email', this.email);
+        formData.append('phoneNumber', this.phoneNumber);
+        formData.append('comment', this.comment);
+        formData.append('preferredContactMethod', this.preferredContact);
+
+        console.info(formData);
+        this.client.post('request/ContactSubmit.php', formData); 
+        
       } else {
         console.info('error');
       }

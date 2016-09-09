@@ -3,7 +3,6 @@ import {ValidationError, RenderInstruction} from 'aurelia-validation';
 export class CustomValidationRenderer {
 
   render(instruction) {
-    console.log(instruction);
     for (let {error, elements} of instruction.unrender) {
       for (let element of elements) {
         this.remove(element, error);

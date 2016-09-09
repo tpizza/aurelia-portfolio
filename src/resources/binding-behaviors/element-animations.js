@@ -11,10 +11,6 @@ export class ElementAnimations {
 
 	animateElement(selector, animation, classy){
 		
-		console.log(selector);
-		console.log(selector);
-		console.log(selector);
-		console.log(this.element);
 
 		if(selector === undefined || animation === undefined)
 			throw new TypeError(`A selector and CSS animation name must be passed to the animator.`);
@@ -30,8 +26,7 @@ export class ElementAnimations {
 	}
 
 	animate(element, animation){
-		console.log(element);
-		console.log(animation);
+
 		this.animator.animate(element, animation);
 	}
 

@@ -4,7 +4,7 @@
 .animatedFlyout{
 	position: absolute;
 	right: -100%;
-   z-index: 100;
+   	z-index: 100;
 }
 
 .animatedFlyout.toggled{
@@ -23,5 +23,9 @@
 
 .flyout-container label{
 	color: #fff2cc;
+}
+
+.flyout-wrap{
+	position: relative;
 }
 
