@@ -6,7 +6,7 @@
 			</button>
 			<h2>${message}</h2>
 			<div class="clearfix"></div>
-			<contact-form></contact-form>
+			<contact-form form-name.bind="formName" success-callback.bind="[app.contact, app.animator]"></contact-form>
 		</section>
 	</div>
 </template>

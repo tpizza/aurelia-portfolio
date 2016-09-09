@@ -2,20 +2,7 @@
 	<div class="summary-box alert alert-warning" show.bind="errors.length">
 		<i class="fa fa-3x fa-warning vmiddle"></i>
 		<span class="error-summary-list vmiddle">
-			Oops. Please fix any errors to continue.
-			to continue.
+			Oops. Please fix the errors below to continue.
 		</span>
-		
 	</div>
-	<!-- <ul class="error-summary-list alert alert-danger" show.bind="errors.length">
-	    <li repeat.for="error of errors">
-	      <a class="error-summary-list-link" href="#" click.delegate="controller.elements.get(error)[0].focus()"
-	         if.bind="controller!=null && autofocus">
-	        <template replaceable part="error">${error.message}</template>
-	      </a>
-	      <span if.bind="!(controller!=null && autofocus)">
-	        <template replaceable part="error">${error.message}</template>
-	        </span>
-	    </li>
-	</ul> -->
 </template>

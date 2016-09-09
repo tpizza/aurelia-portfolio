@@ -1,6 +1,10 @@
 <template>
-			
-		<form role="form" validation-errors.bind="errors" submit.delegate="submit()" novalidate>
+		
+		<div class="form-success" show.bind="submitSuccess">
+			<p>Thank you for your ${ask}.  We will be in touch soon!</p>
+		</div>
+
+		<form role="form" validation-errors.bind="errors" submit.delegate="submit()" show.bind="!submitSuccess" novalidate>
 			
 			<error-summary errors.bind="controller.errors" controller.bind="controller" autofocus.bind="true"></error-summary>
 			
@@ -40,8 +44,8 @@
 			</div>
 
 			<div class="form-group">
-				<label for="contact-message">Message:</label>
-				<textarea class="form-control" id="contact-message" value.bind="comment | sanitizeHTML"></textarea>
+				<label for="comment">Message:</label>
+				<textarea class="form-control" id="comment" value.bind="comment | sanitizeHTML"></textarea>
 			</div>
 
 			<button class="btn btn-success btn-lg" type="submit">Submit ${ask}</button>
